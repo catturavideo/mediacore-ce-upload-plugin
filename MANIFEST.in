@@ -1,0 +1,16 @@
+# MANIFEST.in lists all extra files for sdist to include in a distribution.
+
+# By default, because we specify no MANIFEST file, sdist will include
+# README.txt, all *.py files it finds, etc... For a full list, see:
+# http://docs.python.org/distutils/sourcedist.html#specifying-the-files-to-distribute
+
+include LICENSE.txt
+
+# Include all files in these directories
+graft mediacore_panda/templates
+graft mediacore_panda/i18n
+
+# Always ignore scrap files
+recursive-exclude * *.pyc
+recursive-exclude * .*.swp
+recursive-exclude * .DS_Store

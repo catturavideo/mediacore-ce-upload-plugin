@@ -1,0 +1,4 @@
+
+        [mediacore.plugin]
+        upload_api=mediacore_upload
+    

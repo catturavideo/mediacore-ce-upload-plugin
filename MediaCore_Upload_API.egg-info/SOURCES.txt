@@ -1,0 +1,15 @@
+LICENSE.txt
+MANIFEST.in
+setup.cfg
+setup.py
+MediaCore_Upload_API.egg-info/PKG-INFO
+MediaCore_Upload_API.egg-info/SOURCES.txt
+MediaCore_Upload_API.egg-info/dependency_links.txt
+MediaCore_Upload_API.egg-info/entry_points.txt
+MediaCore_Upload_API.egg-info/not-zip-safe
+MediaCore_Upload_API.egg-info/requires.txt
+MediaCore_Upload_API.egg-info/top_level.txt
+mediacore_upload/__init__.py
+mediacore_upload/controllers/__init__.py
+mediacore_upload/controllers/api/__init__.py
+mediacore_upload/controllers/api/uploader.py
