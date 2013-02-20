@@ -13,9 +13,10 @@ from mediacore.lib.decorators import expose, validate, autocommit
 from mediacore.model import User, Author, Category, Media, MediaFile, Podcast, Tag, fetch_row, get_available_slug
 from mediacore.model.meta import DBSession
 from mediacore.lib.storage import StorageEngine
+from mediacore_upload.model import upload_tokens
 
 log = logging.getLogger(__name__)
-upload_tokens = {}
+log.info("LOADING UPLOADER")
 
 def require_admin(action):
     """
@@ -95,7 +96,7 @@ class UploaderController(BaseController):
     @expose("json",request_method="POST")
     def prepareForUpload(self,environ,media_id,content_type,filename,filesize,meta=None,**kwargs):        
         STORAGE_ENGINE = getStorageEngine()
-        log.info("prepareForUpload({media_id},{content_type},{filename},{filesize})".format(**vars()))
+        log.info("{self}.prepareForUpload({media_id},{content_type},{filename},{filesize})".format(**vars()))
 
         if not meta:
             meta = {}
@@ -141,7 +142,7 @@ class UploaderController(BaseController):
     @autocommit
     @expose("json",request_method="POST")
     def uploadFile(self,environ,media_id,file_id,**kwargs):
-        log.info("uploadFile({media_id},{file_id})".format(**vars()))
+        log.info("{self}.uploadFile({media_id},{file_id})".format(**vars()))
         
         media = fetch_row(Media, media_id)
         mediaFile = fetch_row(MediaFile, file_id)
@@ -150,7 +151,7 @@ class UploaderController(BaseController):
         if 'HTTP_X_UPLOAD_TOKEN' not in environ or str(file_id) not in upload_tokens.keys():
             raise webob.exc.HTTPForbidden().exception
         elif not environ['HTTP_X_UPLOAD_TOKEN'] == upload_tokens[str(file_id)]:
-            raise webob.exc.HTTPForbidden().exception            
+            raise webob.exc.HTTPForbidden().exception
 
         STORAGE_ENGINE = getStorageEngine()
 
@@ -164,7 +165,7 @@ class UploaderController(BaseController):
         try:
             STORAGE_ENGINE.transcode(mediaFile)
         except Exception:
-            log.debug('Engine %r unsuitable for transcoding %r', STORAGE_ENGINE, mediaFile)            
+            log.debug('Engine %r unsuitable for transcoding %r', STORAGE_ENGINE, mediaFile)
 
         mediaFile.container = os.path.splitext(mediaFile.display_name)[1][1:]
         if unique_id:
@@ -181,7 +182,7 @@ class UploaderController(BaseController):
     @require_admin
     @expose("json",request_method="PUT")
     def postprocessFile(self,media_id,file_id,**kwargs):
-        log.info("postprocessFile({media_id},{file_id})".format(**vars()))
+        log.info("{self}.postprocessFile({media_id},{file_id})".format(**vars()))
         return {
             "success": True
         }
